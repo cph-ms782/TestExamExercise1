@@ -3,7 +3,7 @@
 ---
 dist: bionic
 
-language: oraclejdk9
+language: oraclejdk8
 
 cache:
   directories:
