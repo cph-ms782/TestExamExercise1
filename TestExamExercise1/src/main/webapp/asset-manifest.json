@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "./static/css/main.db567c39.chunk.css",
+    "main.js": "./static/js/main.e826f33a.chunk.js",
+    "main.js.map": "./static/js/main.e826f33a.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.46790870.js",
+    "runtime-main.js.map": "./static/js/runtime-main.46790870.js.map",
+    "static/js/2.8fa74ba3.chunk.js": "./static/js/2.8fa74ba3.chunk.js",
+    "static/js/2.8fa74ba3.chunk.js.map": "./static/js/2.8fa74ba3.chunk.js.map",
+    "index.html": "./index.html",
+    "precache-manifest.0d946b543c6878c07a0fdb5a64228595.js": "./precache-manifest.0d946b543c6878c07a0fdb5a64228595.js",
+    "service-worker.js": "./service-worker.js",
+    "static/css/main.db567c39.chunk.css.map": "./static/css/main.db567c39.chunk.css.map",
+    "static/media/ReactNodes.svg": "./static/media/ReactNodes.2dc4b769.svg",
+    "static/media/attacker.png": "./static/media/attacker.09a8c11c.png",
+    "static/media/banner_marple.png": "./static/media/banner_marple.4f512ae4.png",
+    "static/media/buy.png": "./static/media/buy.c9d865bb.png",
+    "static/media/buy_background.png": "./static/media/buy_background.f7c93724.png",
+    "static/media/down-arrow.jpg": "./static/media/down-arrow.4e9828f1.jpg",
+    "static/media/plmap.svg": "./static/media/plmap.4c8c25c4.svg",
+    "static/media/premier-league-trophy.jpg": "./static/media/premier-league-trophy.82c049de.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.46790870.js",
+    "static/js/2.8fa74ba3.chunk.js",
+    "static/css/main.db567c39.chunk.css",
+    "static/js/main.e826f33a.chunk.js"
+  ]
+}
