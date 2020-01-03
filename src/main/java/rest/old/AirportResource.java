@@ -1,9 +1,8 @@
 package rest;
 
-import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
-import dto.AirportsDTO;
-import dto.MatchDTO;
-import dto.TeamAirportDTO;
+import dto.old.AirportsDTO;
+import dto.old.MatchDTO;
+import dto.old.TeamAirportDTO;
 import facades.AirportFacade;
 import java.io.IOException;
 import java.net.ProtocolException;

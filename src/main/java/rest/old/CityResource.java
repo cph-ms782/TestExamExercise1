@@ -1,6 +1,6 @@
 package rest;
 
-import dto.CitiesDTO;
+import dto.old.CitiesDTO;
 import entities.User;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package facades;
 
-import dto.MatchDTO;
+import dto.old.MatchDTO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

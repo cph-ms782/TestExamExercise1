@@ -1,10 +1,9 @@
-package rest;
+package rest.old;
 
-import dto.MatchDTO;
-import dto.MatchesDTO;
-import dto.StandingsDTO;
-import dto.TeamDTO;
-import dto.TeamMemberDTO;
+import dto.old.MatchDTO;
+import dto.old.StandingsDTO;
+import dto.old.TeamDTO;
+import dto.old.TeamMemberDTO;
 import facades.ApiFacade;
 import java.io.IOException;
 import java.net.ProtocolException;
