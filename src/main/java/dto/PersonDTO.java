@@ -2,6 +2,7 @@ package dto;
 
 import entities.Person;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Objects;
 
 public class PersonDTO {
     @Schema(required = true, example = "1")
@@ -34,8 +35,19 @@ public class PersonDTO {
         email = person.getEmail();
     }
 
-    public PersonDTO(String email, String firstName, String lastName, String street, int zip) {
+    public PersonDTO(String email, String phone, String firstName, String lastName, String street, int zip) {
         this.email = email;
+        this.phone = phone;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.street = street;
+        this.zip = zip;
+    }
+
+    public PersonDTO(int personID, String email, String phone, String firstName, String lastName, String street, int zip) {
+        this.personID = personID;
+        this.email = email;
+        this.phone = phone;
         this.firstName = firstName;
         this.lastName = lastName;
         this.street = street;
@@ -56,6 +68,14 @@ public class PersonDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getFirstName() {
@@ -95,5 +115,56 @@ public class PersonDTO {
         return "PersonDTO{" + "personID=" + personID + ", email=" + email + ", phone=" + phone + ", firstName=" + firstName + ", lastName=" + lastName + ", street=" + street + ", zip=" + zip + '}';
     }
 
+    
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 17 * hash + this.personID;
+        hash = 17 * hash + Objects.hashCode(this.email);
+        hash = 17 * hash + Objects.hashCode(this.phone);
+        hash = 17 * hash + Objects.hashCode(this.firstName);
+        hash = 17 * hash + Objects.hashCode(this.lastName);
+        hash = 17 * hash + Objects.hashCode(this.street);
+        hash = 17 * hash + this.zip;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PersonDTO other = (PersonDTO) obj;
+        if (this.personID != other.personID) {
+            return false;
+        }
+        if (this.zip != other.zip) {
+            return false;
+        }
+        if (!Objects.equals(this.email, other.email)) {
+            return false;
+        }
+        if (!Objects.equals(this.phone, other.phone)) {
+            return false;
+        }
+        if (!Objects.equals(this.firstName, other.firstName)) {
+            return false;
+        }
+        if (!Objects.equals(this.lastName, other.lastName)) {
+            return false;
+        }
+        if (!Objects.equals(this.street, other.street)) {
+            return false;
+        }
+        return true;
+    }
+
+    
     
 }

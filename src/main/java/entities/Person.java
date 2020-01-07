@@ -15,10 +15,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 @Entity
-@NamedQuery(name = "Person.deleteAllRows", query = "DELETE from Person")
+@Table(name = "PERSON")
+@NamedQueries({
+    @NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p"),
+    @NamedQuery(name = "Person.findById", query = "SELECT p FROM Person p WHERE p.personID = :personID"),
+    @NamedQuery(name = "Person.findByEmail", query = "SELECT p FROM Person p WHERE p.email = :email"),
+    @NamedQuery(name = "Person.findByPhone", query = "SELECT p FROM Person p WHERE p.phone = :phone"),
+    @NamedQuery(name = "Person.findByHobbyNames", query = "SELECT p FROM Person p JOIN p.hobbies h WHERE h.name = :name"),
+    @NamedQuery(name = "Person.deleteAllRows", query = "DELETE from Person")
+})
 public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -56,7 +66,6 @@ public class Person implements Serializable {
         this.lastName = lastName;
         this.address = address;
     }
-    
 
 //    public Person(String email, String firstName, String lastName) {
 //        this.email = email;
@@ -71,7 +80,6 @@ public class Person implements Serializable {
 //        this.address = address;
 //        address.addPerson(this);
 //    }
-
     public Address getAddress() {
         return address;
     }
@@ -193,7 +201,5 @@ public class Person implements Serializable {
         }
         return true;
     }
-
-    
 
 }
