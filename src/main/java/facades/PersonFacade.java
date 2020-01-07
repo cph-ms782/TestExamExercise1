@@ -22,6 +22,11 @@ public class PersonFacade {
     //Private Constructor to ensure Singleton
     private PersonFacade() {
     }
+    
+    // temp changed to public and given parameters
+    public PersonFacade(EntityManagerFactory _emf) {
+        emf = _emf;
+    }
 
     /**
      *
@@ -36,7 +41,8 @@ public class PersonFacade {
         return instance;
     }
 
-    private EntityManager getEntityManager() {
+    //temp changed to public
+    public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
@@ -44,7 +50,14 @@ public class PersonFacade {
         EntityManager em = emf.createEntityManager();
         try {
             Person p = em.find(Person.class, personID);
-            PersonDTO pDTO = new PersonDTO(p.getEmail(), p.getPhone(), p.getFirstName(), p.getLastName(), p.getAddress().getStreet(), p.getAddress().getZip());
+            PersonDTO pDTO = new PersonDTO(
+                    p.getEmail(),
+                    p.getPhone(),
+                    p.getFirstName(),
+                    p.getLastName(),
+                    p.getAddress().getStreet(),
+                    p.getAddress().getZip()
+            );
             pDTO.setPersonID(p.getPersonID());
             return pDTO;
         } finally {
@@ -61,7 +74,14 @@ public class PersonFacade {
             List<Person> result = query.getResultList();
             if (result.size() == 1) {
                 Person p = result.get(0);
-                pDTO = new PersonDTO(p.getPersonID(), p.getEmail(), p.getPhone(), p.getFirstName(), p.getLastName(), p.getAddress().getStreet(), p.getAddress().getZip());
+                pDTO = new PersonDTO(p.getPersonID(),
+                        p.getEmail(),
+                        p.getPhone(),
+                        p.getFirstName(),
+                        p.getLastName(),
+                        p.getAddress().getStreet(),
+                        p.getAddress().getZip()
+                );
             }
             return pDTO;
         } finally {
@@ -78,7 +98,15 @@ public class PersonFacade {
             List<Person> result = query.getResultList();
             if (result.size() == 1) {
                 Person p = result.get(0);
-                pDTO = new PersonDTO(p.getPersonID(), p.getEmail(), p.getPhone(), p.getFirstName(), p.getLastName(), p.getAddress().getStreet(), p.getAddress().getZip());
+                pDTO = new PersonDTO(
+                        p.getPersonID(),
+                        p.getEmail(),
+                        p.getPhone(),
+                        p.getFirstName(),
+                        p.getLastName(),
+                        p.getAddress().getStreet(),
+                        p.getAddress().getZip()
+                );
             }
             return pDTO;
         } finally {
@@ -151,16 +179,6 @@ public class PersonFacade {
             em.getTransaction().begin();
             em.merge(changedPerson);
             em.getTransaction().commit();
-//            Query query = em.createQuery(
-//                    "UPDATE Person SET email = :email, phone = :phone, firstName = :firstName"
-//                            + ", lastName = :lastName WHERE id = :id");
-//            int updateCount = query
-//                    .setParameter(email, email)
-//                    .setParameter(phone, phone)
-//                    .setParameter(firstName, firstName)
-//                    .setParameter(lastName, lastName)
-//                    .setParameter(personID, personID)
-//                    .executeUpdate();
             PersonDTO pDTO = new PersonDTO(changedPerson.getPersonID(), email, phone, firstName, lastName, street, zip);
             return pDTO;
         } finally {

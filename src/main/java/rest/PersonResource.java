@@ -1,14 +1,7 @@
 package rest;
 
-import dto.old.MatchesDTO;
-import facades.ApiFacade;
+import dto.PersonDTO;
 import facades.PersonFacade;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -58,6 +51,35 @@ public class PersonResource {
         return "{\"msg\": \"DB emptied\"}";
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("id/{personID}")
+    public PersonDTO findByID(@PathParam("personID") int personID) {
+        facade = PersonFacade.getPersonFacade(EMF);
+        return facade.getPersonByID(personID);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("phone/{phone}")
+    public PersonDTO findByPhone(@PathParam("phone") String phone) {
+        facade = PersonFacade.getPersonFacade(EMF);
+        return facade.getPersonByPhone(phone);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("email/{email}")
+    public PersonDTO findByEmail(@PathParam("email") String email) {
+        facade = PersonFacade.getPersonFacade(EMF);
+        return facade.getPersonByEmail(email);
+    }
+
+
+    
+    
+    
+    
 //    @GET
 //    @Produces(MediaType.APPLICATION_JSON)
 //    @Path("{city}")

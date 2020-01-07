@@ -35,8 +35,6 @@ public class UserFacadeTest {
     private static EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.TEST, EMF_Creator.Strategy.CREATE);
     private static UserFacade facade = UserFacade.getUserFacade(emf);
 
-    ;
-    
     @BeforeAll
     public static void setUpClass() {
         //This method must be called before you request the EntityManagerFactory
