@@ -6,14 +6,18 @@ import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
  *
+ * @author frede
  */
 @Entity
 @NamedQuery(name = "Address.deleteAllRows", query = "DELETE from Address")
@@ -25,8 +29,11 @@ public class Address implements Serializable {
     private Integer addressID;
     
     private String street;
-    private String city;
-    private Integer zip;
+    private String additionalInfo;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cityInfoID")
+    private CityInfo cityInfo;
     
     @OneToMany(
             mappedBy = "address",
@@ -44,13 +51,24 @@ public class Address implements Serializable {
     public void addPerson(Person person) {
         this.persons.add(person);
     }
-
-    public Address(String street, String city, Integer zip) {
-        this.street = street;
-        this.city = city;
-        this.zip = zip;
-    }
     
+    public Address(String street, String additionalInfo, CityInfo cityInfo) {
+        this.street = street;
+        this.additionalInfo = additionalInfo;
+        this.cityInfo = cityInfo;
+        cityInfo.addAddress(this);
+    }
+
+    public CityInfo getCityInfo() {
+        return cityInfo;
+    }
+
+    public void setCityInfo(CityInfo cityInfo) {
+        this.cityInfo = cityInfo;
+        if(!cityInfo.getAddresses().contains(this))
+            cityInfo.addAddress(this);
+    }
+
     public String getStreet() {
         return street;
     }
@@ -58,6 +76,14 @@ public class Address implements Serializable {
     public void setStreet(String street) {
         this.street = street;
     }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }    
 
     public Integer getAddressID() {
         return addressID;
@@ -67,35 +93,20 @@ public class Address implements Serializable {
         this.addressID = addressID;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public Integer getZip() {
-        return zip;
-    }
-
-    public void setZip(Integer zip) {
-        this.zip = zip;
-    }
-
     @Override
     public String toString() {
-        return "Address{" + "addressID=" + addressID + ", street=" + street + ", city=" + city + ", zip=" + zip + ", persons=" + persons + '}';
+        return "Address{" + "addressID=" + addressID + ", street=" + street + ", additionalInfo=" + additionalInfo + ", cityInfo=" + cityInfo + ", persons=" + persons + '}';
     }
+
     
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.addressID);
-        hash = 29 * hash + Objects.hashCode(this.street);
-        hash = 29 * hash + Objects.hashCode(this.city);
-        hash = 29 * hash + Objects.hashCode(this.zip);
-        hash = 29 * hash + Objects.hashCode(this.persons);
+        int hash = 5;
+        hash = 97 * hash + Objects.hashCode(this.addressID);
+        hash = 97 * hash + Objects.hashCode(this.street);
+        hash = 97 * hash + Objects.hashCode(this.additionalInfo);
+        hash = 97 * hash + Objects.hashCode(this.cityInfo);
+        hash = 97 * hash + Objects.hashCode(this.persons);
         return hash;
     }
 
@@ -114,21 +125,17 @@ public class Address implements Serializable {
         if (!Objects.equals(this.street, other.street)) {
             return false;
         }
-        if (!Objects.equals(this.city, other.city)) {
+        if (!Objects.equals(this.additionalInfo, other.additionalInfo)) {
             return false;
         }
         if (!Objects.equals(this.addressID, other.addressID)) {
             return false;
         }
-        if (!Objects.equals(this.zip, other.zip)) {
-            return false;
-        }
-        if (!Objects.equals(this.persons, other.persons)) {
+        if (!Objects.equals(this.cityInfo, other.cityInfo)) {
             return false;
         }
         return true;
     }
-
 
     
 }

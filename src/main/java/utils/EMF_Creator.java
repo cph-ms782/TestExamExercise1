@@ -53,7 +53,7 @@ public class EMF_Creator {
     }
 
     /*
-      Call this method in your @AfterAll method if startREST_TestWithDB() was previously called
+      Call this method in your @AferAll method if startREST_TestWithDB() was previously called
     */
     public static void endREST_TestWithDB(){
       System.clearProperty("IS_INTEGRATION_TEST_WITH_DB"); 
@@ -132,7 +132,7 @@ public class EMF_Creator {
         */
         
         System.out.println("USER ------------> "+user);
-        System.out.println("PW --------------> Not disclosed"); //+pw);
+        System.out.println("PW --------------> "+pw);
         System.out.println("CONNECTION STR---> "+connection_str);
         System.out.println("PU-Strategy---> "+strategy.toString());
         

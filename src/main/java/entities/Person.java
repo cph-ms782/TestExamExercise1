@@ -17,16 +17,18 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "PERSON")
 @NamedQueries({
     @NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p"),
-    @NamedQuery(name = "Person.findById", query = "SELECT p FROM Person p WHERE p.personID = :personID"),
-    @NamedQuery(name = "Person.findByEmail", query = "SELECT p FROM Person p WHERE p.email = :email"),
-    @NamedQuery(name = "Person.findByPhone", query = "SELECT p FROM Person p WHERE p.phone = :phone"),
-    @NamedQuery(name = "Person.findByHobbyNames", query = "SELECT p FROM Person p JOIN p.hobbies h WHERE h.name = :name"),
+//    @NamedQuery(name = "Person.findById", query = "SELECT p FROM Person p WHERE p.personID = :personID"),
+//    @NamedQuery(name = "Person.findByEmail", query = "SELECT p FROM Person p WHERE p.email = :email"),
+//    @NamedQuery(name = "Person.findByPhone", query = "SELECT p FROM Person p WHERE p.phone = :phone"),
+//    @NamedQuery(name = "Person.findByHobbyNames", query = "SELECT p FROM Person p JOIN p.hobbies h WHERE h.name = :name"),
     @NamedQuery(name = "Person.deleteAllRows", query = "DELETE from Person")
 })
 public class Person implements Serializable {
@@ -35,13 +37,18 @@ public class Person implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int personID;
-
+    
     @Column(name = "email")
     private String email;
-    private String phone;
     private String firstName;
     private String lastName;
-
+    
+    @OneToMany(
+            mappedBy = "person",
+            cascade = CascadeType.PERSIST
+    )
+    private List<Phone> phones = new ArrayList();
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "addressID")
     private Address address;
@@ -51,71 +58,54 @@ public class Person implements Serializable {
         CascadeType.MERGE
     })
     @JoinTable(name = "person_hobbies",
-            joinColumns = @JoinColumn(name = "personID"),
-            inverseJoinColumns = @JoinColumn(name = "hobbyID")
+        joinColumns = @JoinColumn(name = "personID"),
+        inverseJoinColumns = @JoinColumn(name = "hobbyID")
     )
     private List<Hobby> hobbies = new ArrayList<>();
 
     public Person() {
     }
 
-    public Person(String email, String phone, String firstName, String lastName, Address address) {
+    public Person(String email, String firstName, String lastName) {
         this.email = email;
-        this.phone = phone;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public Person(String email, String firstName, String lastName, Address address) {
+        this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
+        address.addPerson(this);
     }
-
-//    public Person(String email, String firstName, String lastName) {
-//        this.email = email;
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//    }
-//
-//    public Person(String email, String firstName, String lastName, Address address) {
-//        this.email = email;
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.address = address;
-//        address.addPerson(this);
-//    }
+    
     public Address getAddress() {
         return address;
     }
 
     public void setAddress(Address address) {
         this.address = address;
-        if (!address.getPersons().contains(this)) {
+        if(!address.getPersons().contains(this))
             address.addPerson(this);
-        }
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setPhones(ArrayList<Phone> phones) {
+        this.phones = phones;
     }
 
     public void setHobbies(List<Hobby> hobbies) {
         this.hobbies = hobbies;
     }
 
-    public List<Hobby> getHobbies() {
-        return hobbies;
+    public List<Phone> getPhones() {
+        return phones;
     }
 
-    public void addHobby(Hobby hobby) {
-        if (!hobbies.contains(hobby)) {
-            hobbies.add(hobby);
-        }
-        if (!hobby.getPersons().contains(this)) {
-            hobby.getPersons().add(this);
-        }
+    public void addPhone(Phone phone) {
+        phones.add(phone);
     }
-
+        
     public int getPersonID() {
         return personID;
     }
@@ -150,19 +140,16 @@ public class Person implements Serializable {
 
     @Override
     public String toString() {
-        return "Person{" + "personID=" + personID + ", email=" + email + ", phone=" + phone + ", firstName=" + firstName + ", lastName=" + lastName + ", address=" + address + ", hobbies=" + hobbies + '}';
+        return "Person{" + "personID=" + personID + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + '}';
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
+        int hash = 5;
         hash = 97 * hash + this.personID;
         hash = 97 * hash + Objects.hashCode(this.email);
-        hash = 97 * hash + Objects.hashCode(this.phone);
         hash = 97 * hash + Objects.hashCode(this.firstName);
         hash = 97 * hash + Objects.hashCode(this.lastName);
-        hash = 97 * hash + Objects.hashCode(this.address);
-        hash = 97 * hash + Objects.hashCode(this.hobbies);
         return hash;
     }
 
@@ -184,22 +171,15 @@ public class Person implements Serializable {
         if (!Objects.equals(this.email, other.email)) {
             return false;
         }
-        if (!Objects.equals(this.phone, other.phone)) {
-            return false;
-        }
         if (!Objects.equals(this.firstName, other.firstName)) {
             return false;
         }
         if (!Objects.equals(this.lastName, other.lastName)) {
             return false;
         }
-        if (!Objects.equals(this.address, other.address)) {
-            return false;
-        }
-        if (!Objects.equals(this.hobbies, other.hobbies)) {
-            return false;
-        }
         return true;
     }
-
+    
+    
+    
 }

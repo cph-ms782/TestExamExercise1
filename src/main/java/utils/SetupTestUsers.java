@@ -43,5 +43,11 @@ public class SetupTestUsers {
         System.out.println("Testing user with wrong password: " + user.verifyPassword("test1"));
         System.out.println("Created TEST Users");
     }
+    
+    public static void main(String[] args) {
+        
+        new SetupTestUsers().fill();
+        
+    }
 
 }

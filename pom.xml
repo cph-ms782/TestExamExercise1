@@ -4,7 +4,7 @@
 
     <groupId>dat.testexamexercise1</groupId>
     <artifactId>testexamexercise1</artifactId>
-    <version>1</version>
+    <version>1.0.1</version>
     <packaging>war</packaging>
 
     <name>testexamexercise1</name>
@@ -13,23 +13,25 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
-        <!-- TODO: Change the URL to your own tomcat server. Used to deploy your WAR-file 
-        -->
+        <!-- TODO: Add the URL to your own tomcat server. Used to deploy your WAR-file -->
         <remote.server>https://sandersolutions.dk/manager/text</remote.server>
         
     </properties>
     
     <dependencies>
+        
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-jaxrs2</artifactId>
-            <version>2.1.0</version>
+            <version>2.0.9</version>
         </dependency>
+        
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-jaxrs2-servlet-initializer</artifactId>
-            <version>2.1.0</version>
+            <version>2.0.9</version>
         </dependency>
+        
         <dependency>
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
@@ -38,37 +40,37 @@
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.core</artifactId>
-            <version>2.7.5</version>
+            <version>2.5.2</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.asm</artifactId>
-            <version>2.7.5</version>
+            <version>2.5.2</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.antlr</artifactId>
-            <version>2.7.5</version>
+            <version>2.5.2</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa</artifactId>
-            <version>2.7.5</version>
+            <version>2.5.2</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa.jpql</artifactId>
-            <version>2.7.5</version>
+            <version>2.5.2</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>javax.persistence</artifactId>
-            <version>2.2.1</version>
+            <version>2.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
-            <version>2.7.5</version>
+            <version>2.5.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -80,7 +82,7 @@
         <dependency>
             <groupId>org.glassfish.jersey.bundles</groupId>
             <artifactId>jaxrs-ri</artifactId>
-            <version>2.29.1</version>
+            <version>2.29</version>
             <!--            <type>zip</type>-->
         </dependency>
         
@@ -134,22 +136,15 @@
             <version>4.11</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-util</artifactId>
-            <version>8.1.15.v20140411</version>
-            <scope>test</scope>
-            <type>jar</type>
-        </dependency>
-        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
-            <version>8.0.1</version>
+            <version>7.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.8.6</version>
+            <version>2.8.5</version>
         </dependency>
         <dependency>
             <groupId>com.nimbusds</groupId>
@@ -157,18 +152,19 @@
             <!--<version>7.2.0</version>-->
             <version>8.4</version>
         </dependency>
+        
+        
         <!-- Grizly Server used to test REST endpoints -->
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-grizzly2-http</artifactId>
-            <version>2.29.1</version>
-            <!--             <scope>test</scope>-->
+            <version>2.29</version>
         </dependency>
         
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>4.1.2</version>
+            <version>4.0.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -183,6 +179,7 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
+                    
                     <server>TomcatServer</server>
                     <url>${remote.server}</url>
                     <username>${remote.user}</username>
@@ -192,7 +189,7 @@
             </plugin>          
             
             <!--This is used to enable @BeforeAll etc used in jUnit 5 -->
-<!--            <plugin>
+            <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.21.0</version>
                 <dependencies>
@@ -207,12 +204,12 @@
                         <version>5.2.0</version>
                     </dependency>
                 </dependencies>
-            </plugin>-->
+            </plugin>
            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -256,5 +253,5 @@
             </plugin>
         </plugins>
     </build>
-
+    <description>Start code for JPA, JAX-RS projects with support for OpenAPI documentation</description>
 </project>
