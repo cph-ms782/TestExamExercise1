@@ -1,10 +1,14 @@
 package rest;
 
+import dto.HobbyInDTO;
 import dto.HobbyOutDTO;
 import dto.PersonOutDTO;
+import entities.Address;
+import entities.CityInfo;
 import entities.Hobby;
+import entities.Person;
+import facades.HobbyFacade;
 import utils.EMF_Creator;
-import facades.PersonFacade;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -18,10 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManagerFactory;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
 @OpenAPIDefinition(
@@ -48,31 +56,31 @@ import javax.ws.rs.core.MediaType;
         }
 )
 
-@Path("person")
-public class PersonResource {
+@Path("hobby")
+public class HobbyResource {
 
     private static EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
 
-    private static final PersonFacade FACADE = PersonFacade.getPersonFacade(EMF);
+    private static final HobbyFacade FACADE = HobbyFacade.getHobbyFacade(EMF);
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String demo() {
-        return "{\"msg\":\"Hello Person\"}";
+        return "{\"msg\":\"Hello Hobby\"}";
     }
 
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Get Person info by ID",
-            tags = {"person"},
+    @Operation(summary = "Get Hobby info by ID",
+            tags = {"hobby"},
             responses = {
                 @ApiResponse(
                         content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonOutDTO.class))),
-                @ApiResponse(responseCode = "200", description = "The Requested Person"),
+                @ApiResponse(responseCode = "200", description = "The Requested hobby"),
+                @ApiResponse(responseCode = "403", description = "Not authenticated - do login"),
                 @ApiResponse(responseCode = "404", description = "Person not found")})
-
-    public PersonOutDTO getPersonInfo(@PathParam("id") int personID) {
+    public PersonOutDTO getHobbyInfo(@PathParam("id") int personID) {
         if (personID > 0 && personID == 99999) {
             // for test
             return new PersonOutDTO("info@simonskodebiks.dk", "Gũnther", "Steiner");
@@ -82,45 +90,56 @@ public class PersonResource {
         }
     }
 
-//    Get information about a person (address, hobbies etc) given a phone number
-    @GET
-    @Path("phone/{phoneNumber}")
+    @PUT
+    @Path("edit")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Get Person info by PhoneNumber",
-            tags = {"person"},
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Edit existing hobby", tags = {"hobby"},
             responses = {
-                @ApiResponse(
-                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonOutDTO.class))),
-                @ApiResponse(responseCode = "200", description = "The Requested Person"),
-                @ApiResponse(responseCode = "404", description = "Person not found")})
-
-    public PersonOutDTO getPersonInfoByPhoneNumber(@PathParam("phoneNumber") String phoneNumber) {
-        if (phoneNumber != null && phoneNumber.equals("1234")) {
-            // for test
-            return new PersonOutDTO("info@simonskodebiks.dk", "Gũnther", "Steiner");
-        } else {
-            // here should be something real :-)
-            return new PersonOutDTO("info@simonskodebiks.dk", "Gũnther", "Steiner");
+                @ApiResponse(responseCode = "200", description = "The edited person"),
+                @ApiResponse(responseCode = "400", description = "Not all arguments provided with the body")
+            })
+    public HobbyOutDTO editPersonCoreInformation(HobbyInDTO hobbyWithChanges) {
+        if (hobbyWithChanges.getHobbyID()== 0 || hobbyWithChanges.getName()== null || hobbyWithChanges.getDescription()== null) {
+            throw new WebApplicationException("Not all required arguments included", 400);
         }
+
+        return FACADE.editHobby(hobbyWithChanges);
     }
 
-//    Get all persons with a given hobby
-    @GET
-    @Path("all")
+    @POST
+    @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Get all Persons info",
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Add a new hobby to a person", tags = {"hobby"},
+            responses = {
+                @ApiResponse(responseCode = "200", description = "Person with added hobby"),
+                @ApiResponse(responseCode = "400", description = "Not all arguments provided with the body")
+            })
+    public HobbyOutDTO addHobby(HobbyInDTO newHobby) {
+        if (newHobby.getName()== null || newHobby.getDescription()== null) {
+            throw new WebApplicationException("Not all required arguments included", 400);
+        }
+        
+        return FACADE.addHobby(newHobby);
+    }
+
+//    Get all hobbies
+    @GET
+    @Path("hobbies")
+    @RolesAllowed({"user", "admin"})
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Get all hobbies",
             tags = {"person"},
             responses = {
                 @ApiResponse(
                         content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonOutDTO.class))),
-                @ApiResponse(responseCode = "200", description = "The Requested Person"),
-                @ApiResponse(responseCode = "404", description = "Persons not found")})
-
-    public List<PersonOutDTO> getAllPersonsInfoByHobby() {
-        List<PersonOutDTO> p = new ArrayList();
-        p.add(new PersonOutDTO("info@simonskodebiks.dk", "Gũnther", "Steiner"));
-        p.add(new PersonOutDTO("kontakt@simonskodebiks.dk", "Osvaldo", "Ardiles"));
-        return p;
+                @ApiResponse(responseCode = "200", description = "The Requested hobbies"),
+                @ApiResponse(responseCode = "403", description = "Not authenticated - do login"),
+                @ApiResponse(responseCode = "404", description = "Hobbies not found")})
+    public List<Hobby> getAllHobbies() {
+        List<HobbyOutDTO> p = new ArrayList();
+        return FACADE.getHobbies();
     }
 
 }

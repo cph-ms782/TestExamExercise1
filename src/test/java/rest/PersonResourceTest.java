@@ -212,42 +212,4 @@ public class PersonResourceTest {
         fail("The test case is a prototype.");
     }
 
-    /**
-     * Test of getAllPersonsInfoByCity method, of class PersonResource.
-     */
-//    @Test
-    public void testGetAllPersonsInfoByCity() {
-        System.out.println("getAllPersonsInfoByCity");
-        PersonResource instance = new PersonResource();
-        List<PersonOutDTO> expResult = null;
-        List<PersonOutDTO> result = instance.getAllPersonsInfoByCity();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getCountPersonByHobby method, of class PersonResource.
-     */
-//    @Test
-    public void testGetCountPersonByHobby() {
-        System.out.println("getCountPersonByHobby");
-        PersonResource instance = new PersonResource();
-        instance.getCountPersonByHobby();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getAllZipCodes method, of class PersonResource.
-     */
-//    @Test
-    public void testGetAllZipCodes() {
-        System.out.println("getAllZipCodes");
-        PersonResource instance = new PersonResource();
-        instance.getAllZipCodes();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
 }
