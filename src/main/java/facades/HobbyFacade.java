@@ -64,9 +64,12 @@ public class HobbyFacade {
         EntityManager em = emf.createEntityManager();
         try {
             Hobby hobbyToEdit = em.find(Hobby.class, hobbyWithChanges.getHobbyID());
-
-            hobbyToEdit.setName(hobbyWithChanges.getName());
-            hobbyToEdit.setDescription(hobbyWithChanges.getDescription());
+            if (hobbyWithChanges.getName() != null && !hobbyWithChanges.getName().equals("")) { // .isEmpty() virkede ikke her
+                hobbyToEdit.setName(hobbyWithChanges.getName());
+            };
+            if (hobbyWithChanges.getDescription() != null && !hobbyWithChanges.getDescription().equals("")) {
+                hobbyToEdit.setDescription(hobbyWithChanges.getDescription());
+            };
 
             em.getTransaction().begin();
             em.merge(hobbyToEdit);
@@ -78,13 +81,18 @@ public class HobbyFacade {
         }
     }
 
-    public void deleteHobby(int hobbyID) {
-//        EntityManager em = emf.createEntityManager();
-//      try {
-//            return em.find(Hobby.class, hobbyID);
-//        } finally {
-//            em.close();
-//        }
+    public String deleteHobby(int hobbyID) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            Hobby hobbyToDelete = em.find(Hobby.class, hobbyID);
+
+            em.getTransaction().begin();
+            em.remove(hobbyToDelete);
+            em.getTransaction().commit();
+            return "{\"msg\": \"Hobby #" +hobbyID + " deleted!\"}";
+        } finally {
+            em.close();
+        }
     }
 
     // Get all hobbies

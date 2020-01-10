@@ -56,7 +56,7 @@ public class Address implements Serializable {
         this.street = street;
         this.additionalInfo = additionalInfo;
         this.cityInfo = cityInfo;
-        cityInfo.addAddress(this);
+//        cityInfo.addAddress(this);
     }
 
     public CityInfo getCityInfo() {

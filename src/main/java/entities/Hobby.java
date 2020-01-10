@@ -62,6 +62,14 @@ public class Hobby implements Serializable {
         this.description = description;
     }
 
+    public List<Person> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(List<Person> persons) {
+        this.persons = persons;
+    }
+
     @Override
     public String toString() {
         return "Hobby{" + "hobbyID=" + hobbyID + ", name=" + name + ", description=" + description + ", persons=" + persons + '}';

@@ -166,32 +166,6 @@ public class PersonFacadeTest {
     }
 
     /**
-     * Test of getCountPeopleWithHobby method, of class PersonFacade.
-     */
-//    @Test
-    public void testGetCountPeopleWithHobby() {
-        System.out.println("getCountPeopleWithHobby");
-        PersonFacade instance = null;
-        int expResult = 0;
-        int result = instance.getCountPeopleWithHobby();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getAllZipCodes method, of class PersonFacade.
-     */
-//    @Test
-    public void testGetAllZipCodes() {
-        System.out.println("getAllZipCodes");
-        PersonFacade instance = null;
-        instance.getAllZipCodes();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of getFacadeExample method, of class PersonFacade.
      */
 //    @Test

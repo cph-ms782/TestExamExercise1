@@ -16,13 +16,13 @@ public class HobbyInDTO {
     public HobbyInDTO() {
     }
 
-    public HobbyInDTO(int hobbyID, String name, String description) {
-        this.hobbyID = hobbyID;
+    public HobbyInDTO(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public HobbyInDTO(String name, String description) {
+    public HobbyInDTO(int hobbyID, String name, String description) {
+        this.hobbyID = hobbyID;
         this.name = name;
         this.description = description;
     }

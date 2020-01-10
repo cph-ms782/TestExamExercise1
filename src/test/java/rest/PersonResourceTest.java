@@ -183,22 +183,6 @@ public class PersonResourceTest {
     }
 
     /**
-     * Test of getPersonInfoByPhoneNumber method, of class PersonResource.
-     */
-    @Test
-    public void testGetPersonInfoByPhoneNumber() {
-        System.out.println("getPersonInfoByPhoneNumber");
-        given()
-                .contentType("application/json")
-                .get("/person/phone/1234").then()
-                .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("email", equalTo("info@simonskodebiks.dk"))
-                .body("firstName", equalTo("Gũnther"))
-                .body("lastName", equalTo("Steiner"));
-    }
-
-    /**
      * Test of getAllPersonsInfoByHobby method, of class PersonResource.
      */
 //    @Test

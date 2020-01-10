@@ -98,6 +98,15 @@ public class Person implements Serializable {
         this.hobbies = hobbies;
     }
 
+    public void addHobby(Hobby hobby) {
+        if (!hobbies.contains(hobby)) {
+            hobbies.add(hobby);
+        }
+        if (!hobby.getPersons().contains(this)) {
+            hobby.getPersons().add(this);
+        }
+    }
+
     public List<Phone> getPhones() {
         return phones;
     }

@@ -1,8 +1,8 @@
 package rest;
 
 import dto.HobbyOutDTO;
+import dto.PersonInDTO;
 import dto.PersonOutDTO;
-import entities.Hobby;
 import utils.EMF_Creator;
 import facades.PersonFacade;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -16,12 +16,14 @@ import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManagerFactory;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
 @OpenAPIDefinition(
@@ -82,28 +84,39 @@ public class PersonResource {
         }
     }
 
-//    Get information about a person (address, hobbies etc) given a phone number
-    @GET
-    @Path("phone/{phoneNumber}")
+    @POST
+    @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Get Person info by PhoneNumber",
-            tags = {"person"},
-            responses = {
-                @ApiResponse(
-                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonOutDTO.class))),
-                @ApiResponse(responseCode = "200", description = "The Requested Person"),
-                @ApiResponse(responseCode = "404", description = "Person not found")})
-
-    public PersonOutDTO getPersonInfoByPhoneNumber(@PathParam("phoneNumber") String phoneNumber) {
-        if (phoneNumber != null && phoneNumber.equals("1234")) {
-            // for test
-            return new PersonOutDTO("info@simonskodebiks.dk", "Gũnther", "Steiner");
-        } else {
-            // here should be something real :-)
-            return new PersonOutDTO("info@simonskodebiks.dk", "Gũnther", "Steiner");
+    @Consumes(MediaType.APPLICATION_JSON)
+    public PersonOutDTO addPerson(PersonInDTO newPerson) {
+        if (newPerson.getFirstName()== null || newPerson.getLastName()== null ||
+                newPerson.getEmail()== null) {
+            throw new WebApplicationException("Not all required arguments included", 400);
         }
+        
+        return FACADE.addPerson(newPerson);
     }
 
+//    @PUT
+//    @Path("edit")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public HobbyOutDTO editPerson(HobbyInDTO hobbyWithChanges) {
+//        if (hobbyWithChanges.getHobbyID()== 0 ) {
+//            throw new WebApplicationException("Not all required arguments included", 400);
+//        }
+//        return FACADE.editHobby(hobbyWithChanges);
+//    }
+
+//    @DELETE
+//    @Path("delete/{id}")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public String deleteHobby(@PathParam("id") int hobbyID) {
+//            return FACADE.deleteHobby(hobbyID);
+//    }
+
+    
+    
 //    Get all persons with a given hobby
     @GET
     @Path("all")
@@ -121,6 +134,23 @@ public class PersonResource {
         p.add(new PersonOutDTO("info@simonskodebiks.dk", "Gũnther", "Steiner"));
         p.add(new PersonOutDTO("kontakt@simonskodebiks.dk", "Osvaldo", "Ardiles"));
         return p;
+    }
+
+    //    Get all persons with a given hobby
+    @GET
+    @Path("fill")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String fillDB() {
+        FACADE.fillUp();
+        return "{\"msg\": \"DB filled\"}";
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("empty")
+    public String emptyDB() {
+        FACADE.emptyDB();
+        return "{\"msg\": \"DB emptied\"}";
     }
 
 }

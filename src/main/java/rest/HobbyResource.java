@@ -3,10 +3,7 @@ package rest;
 import dto.HobbyInDTO;
 import dto.HobbyOutDTO;
 import dto.PersonOutDTO;
-import entities.Address;
-import entities.CityInfo;
 import entities.Hobby;
-import entities.Person;
 import facades.HobbyFacade;
 import utils.EMF_Creator;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -20,9 +17,9 @@ import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -99,11 +96,10 @@ public class HobbyResource {
                 @ApiResponse(responseCode = "200", description = "The edited person"),
                 @ApiResponse(responseCode = "400", description = "Not all arguments provided with the body")
             })
-    public HobbyOutDTO editPersonCoreInformation(HobbyInDTO hobbyWithChanges) {
-        if (hobbyWithChanges.getHobbyID()== 0 || hobbyWithChanges.getName()== null || hobbyWithChanges.getDescription()== null) {
+    public HobbyOutDTO editPerson(HobbyInDTO hobbyWithChanges) {
+        if (hobbyWithChanges.getHobbyID()== 0 ) {
             throw new WebApplicationException("Not all required arguments included", 400);
         }
-
         return FACADE.editHobby(hobbyWithChanges);
     }
 
@@ -124,10 +120,25 @@ public class HobbyResource {
         return FACADE.addHobby(newHobby);
     }
 
+    @DELETE
+    @Path("delete/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Delete Hobby ",
+            tags = {"hobby"},
+            responses = {
+                @ApiResponse(
+                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = PersonOutDTO.class))),
+                @ApiResponse(responseCode = "200", description = "The Requested hobby"),
+                @ApiResponse(responseCode = "403", description = "Not authenticated - do login"),
+                @ApiResponse(responseCode = "404", description = "Person not found")})
+    public String deleteHobby(@PathParam("id") int hobbyID) {
+            return FACADE.deleteHobby(hobbyID);
+    }
+
 //    Get all hobbies
     @GET
     @Path("hobbies")
-    @RolesAllowed({"user", "admin"})
+//    @RolesAllowed({"user", "admin"})
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Get all hobbies",
             tags = {"person"},
