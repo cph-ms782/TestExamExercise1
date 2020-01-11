@@ -83,17 +83,6 @@ public class Phone implements Serializable {
     public String toString() {
         return "Phone{" + "phoneID=" + phoneID + ", phoneNumber=" + phoneNumber + ", description=" + description + ", person=" + person + '}';
     }
-    
-    
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 37 * hash + Objects.hashCode(this.phoneID);
-        hash = 37 * hash + Objects.hashCode(this.phoneNumber);
-        hash = 37 * hash + Objects.hashCode(this.description);
-        hash = 37 * hash + Objects.hashCode(this.person);
-        return hash;
-    }
 
     @Override
     public boolean equals(Object obj) {

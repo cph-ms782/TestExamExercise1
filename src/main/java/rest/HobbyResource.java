@@ -67,7 +67,7 @@ public class HobbyResource {
     }
 
     @GET
-    @Path("{id}")
+    @Path("id/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(summary = "Get Hobby info by ID",
             tags = {"hobby"},

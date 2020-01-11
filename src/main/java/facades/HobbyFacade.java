@@ -2,7 +2,6 @@ package facades;
 
 import dto.HobbyInDTO;
 import dto.HobbyOutDTO;
-import entities.Address;
 import entities.Hobby;
 import java.util.List;
 import javax.persistence.EntityManager;

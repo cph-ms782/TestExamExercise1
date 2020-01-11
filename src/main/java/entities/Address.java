@@ -98,18 +98,6 @@ public class Address implements Serializable {
         return "Address{" + "addressID=" + addressID + ", street=" + street + ", additionalInfo=" + additionalInfo + ", cityInfo=" + cityInfo + ", persons=" + persons + '}';
     }
 
-    
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 97 * hash + Objects.hashCode(this.addressID);
-        hash = 97 * hash + Objects.hashCode(this.street);
-        hash = 97 * hash + Objects.hashCode(this.additionalInfo);
-        hash = 97 * hash + Objects.hashCode(this.cityInfo);
-        hash = 97 * hash + Objects.hashCode(this.persons);
-        return hash;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

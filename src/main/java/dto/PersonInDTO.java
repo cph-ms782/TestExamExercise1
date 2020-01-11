@@ -28,6 +28,13 @@ public class PersonInDTO {
     public PersonInDTO() {
     }
 
+    public PersonInDTO(int personID, String email, String firstName, String lastName) {
+        this.personID = personID;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    
     public PersonInDTO(
             String email,
             String firstName,

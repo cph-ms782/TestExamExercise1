@@ -88,21 +88,21 @@ public class PersonFacade {
         Person person;
 
         try {
-            em.getTransaction().begin();
+            person = new Person(newPerson.getEmail(), newPerson.getFirstName(),
+                    newPerson.getLastName());
+//            if (newPerson.getAddressID() != null && newPerson.getAddressID() > 0) {
+//                person.setAddress(address);
+//            }
 
-            if (newPerson.getAddressID() > 0) {
-                address = em.find(Address.class, newPerson.getAddressID());
-            }
 
-            person = new Person(newPerson.getEmail(), newPerson.getFirstName(), 
-                    newPerson.getLastName(), address);
-
+            address = em.find(Address.class, 1);
+            person.setAddress(address);
             em.getTransaction().begin();
             em.persist(person);
             em.getTransaction().commit();
 
-            PersonOutDTO personOUT= new PersonOutDTO(
-                    person.getEmail(), 
+            PersonOutDTO personOUT = new PersonOutDTO(
+                    person.getEmail(),
                     person.getFirstName(),
                     person.getLastName()
             );
@@ -201,9 +201,11 @@ public class PersonFacade {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
             em.createNamedQuery("Address.deleteAllRows").executeUpdate();
             em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.getTransaction().commit();
         } finally {
             em.close();
