@@ -20,6 +20,10 @@ public class PersonInDTO {
     private String lastName;
 
     private Integer addressID;
+    private String street;
+    private String additionalInfo;
+    private int zipCode;
+    private String city;
 
     private List<Integer> hobbyIDs;
 
@@ -34,7 +38,18 @@ public class PersonInDTO {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-    
+
+    public PersonInDTO(int personID, String email, String firstName, String lastName, String street, String additionalInfo, int zipCode, String city) {
+        this.personID = personID;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.street = street;
+        this.additionalInfo = additionalInfo;
+        this.zipCode = zipCode;
+        this.city = city;
+    }
+
     public PersonInDTO(
             String email,
             String firstName,
@@ -49,6 +64,38 @@ public class PersonInDTO {
         this.addressID = addressID;
         this.hobbyIDs = hobbyIDs;
         this.phoneIDs = phoneIDs;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+    public int getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(int zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public Integer getAddressID() {

@@ -6,15 +6,21 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class PersonOutDTO {
 
     private int personID;
-    
+
     @Schema(required = true, example = "info@simonskodebiks.dk")
     private String email;
-    
+
     @Schema(required = true, example = "Gũnther")
     private String firstName;
-    
+
     @Schema(required = true, example = "Steiner")
     private String lastName;
+
+    private Integer addressID;
+    private String street;
+    private String additionalInfo;
+    private int zipCode;
+    private String city;
 
     public PersonOutDTO() {
     }
@@ -23,6 +29,17 @@ public class PersonOutDTO {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public PersonOutDTO(int personID, String email, String firstName, String lastName, String street, String additionalInfo, int zipCode, String city) {
+        this.personID = personID;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.street = street;
+        this.additionalInfo = additionalInfo;
+        this.zipCode = zipCode;
+        this.city = city;
     }
 
     public int getPersonID() {
@@ -56,7 +73,5 @@ public class PersonOutDTO {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
-   
 
 }

@@ -84,19 +84,24 @@ public class PersonFacade {
 
     public PersonOutDTO addPerson(PersonInDTO newPerson) {
         EntityManager em = emf.createEntityManager();
-        Address address = null;
         Person person;
 
         try {
             person = new Person(newPerson.getEmail(), newPerson.getFirstName(),
                     newPerson.getLastName());
-//            if (newPerson.getAddressID() != null && newPerson.getAddressID() > 0) {
-//                person.setAddress(address);
-//            }
 
+            if (newPerson.getStreet() != null && !newPerson.getStreet().isEmpty()) {
+                em.getTransaction().begin();
+                CityInfo cityInfo = new CityInfo(newPerson.getZipCode(), newPerson.getCity());
+                em.persist(cityInfo);
+                em.getTransaction().commit();
+                em.getTransaction().begin();
+                Address address = new Address(newPerson.getStreet(), newPerson.getAdditionalInfo(), cityInfo);
+                em.persist(address);
+                em.getTransaction().commit();
+                person.setAddress(address);
+            }
 
-            address = em.find(Address.class, 1);
-            person.setAddress(address);
             em.getTransaction().begin();
             em.persist(person);
             em.getTransaction().commit();
