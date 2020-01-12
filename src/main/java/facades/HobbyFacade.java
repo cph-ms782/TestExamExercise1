@@ -65,10 +65,10 @@ public class HobbyFacade {
             Hobby hobbyToEdit = em.find(Hobby.class, hobbyWithChanges.getHobbyID());
             if (hobbyWithChanges.getName() != null && !hobbyWithChanges.getName().equals("")) { // .isEmpty() virkede ikke her
                 hobbyToEdit.setName(hobbyWithChanges.getName());
-            };
+            }
             if (hobbyWithChanges.getDescription() != null && !hobbyWithChanges.getDescription().equals("")) {
                 hobbyToEdit.setDescription(hobbyWithChanges.getDescription());
-            };
+            }
 
             em.getTransaction().begin();
             em.merge(hobbyToEdit);

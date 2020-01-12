@@ -1,6 +1,6 @@
 package facades;
 
-import dto.HobbyOutDTO;
+import dto.PersonFullOutDTO;
 import dto.PersonInDTO;
 import dto.PersonOutDTO;
 import entities.Address;
@@ -8,6 +8,7 @@ import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -112,6 +113,120 @@ public class PersonFacade {
                     person.getLastName()
             );
             return personOUT;
+        } finally {
+            em.close();
+        }
+    }
+
+    public PersonOutDTO editPerson(PersonInDTO editingPerson) {
+        EntityManager em = emf.createEntityManager();
+        Person person;
+        CityInfo cityInfo = null;
+        Address address = null;
+
+        try {
+            person = em.find(Person.class, editingPerson.getPersonID());
+
+            if (editingPerson.getStreet() != null
+                    && editingPerson.getAdditionalInfo() != null
+                    && editingPerson.getZipCode() != 0
+                    && !editingPerson.getStreet().isEmpty()
+                    && !editingPerson.getAdditionalInfo().isEmpty()) {
+
+                TypedQuery<CityInfo> query
+                        = em.createNamedQuery("CityInfo.findByZipCode", CityInfo.class).setParameter("zipCode", editingPerson.getZipCode());
+                if (query.getResultList().size() > 0) {
+                    cityInfo = query.getResultList().get(0); // tager kun een ud. Antager der kun er een
+                    em.getTransaction().begin();
+                    em.merge(cityInfo);
+                    em.getTransaction().commit();
+                } else {
+                    cityInfo = new CityInfo(editingPerson.getZipCode(), editingPerson.getCity());
+                    em.getTransaction().begin();
+                    em.persist(cityInfo);
+                    em.getTransaction().commit();
+                }
+
+                TypedQuery<Address> query2
+                        = em.createNamedQuery("Address.findByStreet", Address.class).setParameter("street", editingPerson.getStreet());
+                if (query2.getResultList().size() > 0) {
+                    address = query2.getResultList().get(0);
+                    em.getTransaction().begin();
+                    em.merge(address);
+                    em.getTransaction().commit();
+                } else {
+                    address = new Address(editingPerson.getStreet(), editingPerson.getAdditionalInfo(),
+                            cityInfo);
+                    em.getTransaction().begin();
+                    em.persist(address);
+                    em.getTransaction().commit();
+                }
+
+                person.setAddress(address);
+            }
+
+            if (editingPerson.getEmail() != null && !editingPerson.getEmail().isEmpty()) {
+                person.setEmail(editingPerson.getEmail());
+            }
+            if (editingPerson.getFirstName() != null && !editingPerson.getFirstName().isEmpty()) {
+                person.setFirstName(editingPerson.getFirstName());
+            }
+            if (editingPerson.getLastName() != null && !editingPerson.getLastName().isEmpty()) {
+                person.setLastName(editingPerson.getFirstName());
+            }
+
+            em.getTransaction().begin();
+            em.merge(person);
+            em.getTransaction().commit();
+
+            PersonOutDTO personOUT = new PersonOutDTO(
+                    person.getEmail(),
+                    person.getFirstName(),
+                    person.getLastName()
+            );
+            return personOUT;
+        } finally {
+            em.close();
+        }
+    }
+
+    public String deletePerson(int personID) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            Person personToDelete = em.find(Person.class, personID);
+
+            em.getTransaction().begin();
+            em.remove(personToDelete);
+            em.getTransaction().commit();
+            return "{\"msg\": \"Person #" + personID + " deleted!\"}";
+        } finally {
+            em.close();
+        }
+    }
+
+    // Get all persons
+    public List<PersonFullOutDTO> getPersons() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Person> query = (TypedQuery<Person>) em.createQuery("SELECT h FROM Person h");
+            List<PersonFullOutDTO> outList = new ArrayList();
+            String street=null;
+            for (Person person : query.getResultList()) {
+                if (person.getAddress() != null && person.getAddress().getStreet() != null) {
+                     street = person.getAddress().getStreet();
+                }
+                outList.add(new PersonFullOutDTO(
+                        person.getPersonID(),
+                        person.getEmail(),
+                        person.getFirstName(),
+                        person.getLastName(),
+                        street,
+                        "2",
+                        2,
+                        "2"
+                ));
+            }
+            return outList;
         } finally {
             em.close();
         }

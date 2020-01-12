@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -27,6 +28,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.container.AsyncResponse;
+import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 
 @OpenAPIDefinition(
@@ -134,6 +137,7 @@ public class HobbyResource {
     public String deleteHobby(@PathParam("id") int hobbyID) {
             return FACADE.deleteHobby(hobbyID);
     }
+    private ExecutorService executorService = java.util.concurrent.Executors.newCachedThreadPool();
 
 //    Get all hobbies
     @GET
@@ -148,7 +152,16 @@ public class HobbyResource {
                 @ApiResponse(responseCode = "200", description = "The Requested hobbies"),
                 @ApiResponse(responseCode = "403", description = "Not authenticated - do login"),
                 @ApiResponse(responseCode = "404", description = "Hobbies not found")})
-    public List<Hobby> getAllHobbies() {
+    public void getAllHobbies(@Suspended
+    final AsyncResponse asyncResponse) {
+        executorService.submit(new Runnable() {
+            public void run() {
+                asyncResponse.resume(doGetAllHobbies());
+            }
+        });
+    }
+
+    private List<Hobby> doGetAllHobbies() {
         List<HobbyOutDTO> p = new ArrayList();
         return FACADE.getHobbies();
     }

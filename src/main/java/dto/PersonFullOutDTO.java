@@ -3,7 +3,7 @@ package dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(name = "PersonInfo")
-public class PersonOutDTO {
+public class PersonFullOutDTO {
 
     private int personID;
 
@@ -21,10 +21,10 @@ public class PersonOutDTO {
     private int zipCode;
     private String city;
 
-    public PersonOutDTO() {
+    public PersonFullOutDTO() {
     }
 
-    public PersonOutDTO(int personID, String email, String firstName, String lastName, String street, String additionalInfo, int zipCode, String city) {
+    public PersonFullOutDTO(int personID, String email, String firstName, String lastName, String street, String additionalInfo, int zipCode, String city) {
         this.personID = personID;
         this.email = email;
         this.firstName = firstName;
@@ -35,10 +35,36 @@ public class PersonOutDTO {
         this.city = city;
     }
 
-    public PersonOutDTO(String email, String firstName, String lastName) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+    public int getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(int zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public int getPersonID() {

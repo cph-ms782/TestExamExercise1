@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
@@ -17,19 +18,23 @@ import javax.persistence.OneToMany;
  * @author frede
  */
 @Entity
-@NamedQuery(name = "CityInfo.deleteAllRows", query = "DELETE from CityInfo")
+@NamedQueries({
+    @NamedQuery(name = "CityInfo.deleteAllRows", query = "DELETE from CityInfo"),
+    @NamedQuery(name = "CityInfo.findByZipCode", query = "SELECT ci FROM CityInfo ci WHERE ci.zipCode = :zipCode")
+})
+
 public class CityInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cityInfoID;
-    
+
     private int zipCode;
     private String city;
-    
+
     @OneToMany(
-            mappedBy = "cityInfo", 
+            mappedBy = "cityInfo",
             cascade = CascadeType.PERSIST
     )
     private List<Address> addresses = new ArrayList();
@@ -105,7 +110,5 @@ public class CityInfo implements Serializable {
         }
         return true;
     }
-    
-    
-    
+
 }

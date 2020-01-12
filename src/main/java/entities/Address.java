@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
@@ -20,21 +21,24 @@ import javax.persistence.OneToMany;
  * @author frede
  */
 @Entity
-@NamedQuery(name = "Address.deleteAllRows", query = "DELETE from Address")
+@NamedQueries({
+    @NamedQuery(name = "Address.deleteAllRows", query = "DELETE from Address"),
+    @NamedQuery(name = "Address.findByStreet", query = "SELECT a FROM Address a WHERE a.street = :street")
+})
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer addressID;
-    
+
     private String street;
     private String additionalInfo;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cityInfoID")
     private CityInfo cityInfo;
-    
+
     @OneToMany(
             mappedBy = "address",
             cascade = CascadeType.PERSIST
@@ -51,7 +55,7 @@ public class Address implements Serializable {
     public void addPerson(Person person) {
         this.persons.add(person);
     }
-    
+
     public Address(String street, String additionalInfo, CityInfo cityInfo) {
         this.street = street;
         this.additionalInfo = additionalInfo;
@@ -65,8 +69,9 @@ public class Address implements Serializable {
 
     public void setCityInfo(CityInfo cityInfo) {
         this.cityInfo = cityInfo;
-        if(!cityInfo.getAddresses().contains(this))
+        if (!cityInfo.getAddresses().contains(this)) {
             cityInfo.addAddress(this);
+        }
     }
 
     public String getStreet() {
@@ -83,7 +88,7 @@ public class Address implements Serializable {
 
     public void setAdditionalInfo(String additionalInfo) {
         this.additionalInfo = additionalInfo;
-    }    
+    }
 
     public Integer getAddressID() {
         return addressID;
@@ -125,5 +130,4 @@ public class Address implements Serializable {
         return true;
     }
 
-    
 }
